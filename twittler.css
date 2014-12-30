@@ -1,0 +1,19 @@
+body {
+	font-family: Arial, sans-serif;
+}
+
+div {
+	width: 590px;
+	height: auto;
+	/* idea for negative margin came from
+	http://stackoverflow.com/questions/12692089/preventing-double-borders-in-css */
+	margin: -1px auto;
+	padding: 15px 15px;
+	border: 1px solid #dddddd;
+}
+
+button {
+	position: fixed;
+	top: 250px;
+	margin: 0px auto;
+}

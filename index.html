@@ -3,6 +3,7 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <link rel="stylesheet" href="twittler.css">
   </head>
   <body>
     <script>
@@ -10,15 +11,43 @@
       $(document).ready(function(){
         var $body = $('body');
         $body.html('');
+        
+        var $button = $('<button>More tweets</button>');
+        $body.prepend($button);
 
         var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+
+        var showTweets = function(start) {
+          while(index >= start){
+            var tweet = streams.home[index];
+            var twitterTag = tweet.user;
+            var message = tweet.message;
+            
+            var createdAt = String(tweet.created_at);
+            var date = createdAt.slice(4,10);
+            /* Write some code that will display the time in standard 12hr format, with AM/PM marking, and
+            date, when the user hovers over the date of a tweet post.
+            var expandedTime = createdAt
+             */
+
+            // var $tweet = $([twitterTag, dot, timeStamp]);
+            var $tweet = $('<div></div>');
+            $tweet.text('@' + tweet.user + ': ' + tweet.message + " " + createdAt);
+            $tweet.appendTo($body);
+            index -= 1;
+          }
+        };
+
+        showTweets(0);
+
+        var showNewTweets = function() {
+          var index = streams.home.length - 1;
+          showTweets(10);
+        };
+
+        $('button').on('click', function() {
+          showNewTweets();
+        });
 
       });
 
