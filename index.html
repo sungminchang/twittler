@@ -8,18 +8,17 @@
   <body>
     <script>
 
-      $(document).ready(function(){
+      $(document).ready(function() {
         var $body = $('body');
         $body.html('');
         
-        var $button = $('<button class="update">More tweets</button>');
+        var $button = $('<button>More tweets</button>');
         $body.prepend($button);
 
         var composeTweet = function(i) {
           var tweet = streams.home[i];
-          var twitterTag = tweet.user;
-          var message = tweet.message;
-          
+          console.log(tweet);
+
           var createdAt = String(tweet.created_at);
           var date = createdAt.slice(4,10);
           /* Write some code that will display the time in standard 12hr format, with AM/PM marking, and
@@ -31,7 +30,7 @@
           var $tweet = $('<div></div>');
           $tweet.text('@' + tweet.user + ': ' + tweet.message + " " + createdAt);
           $tweet.prependTo($body);
-        }
+        };
 
         var addTweetsToPage = function() {
           var current = $body.find('div').length;
@@ -48,6 +47,10 @@
         addTweetsToPage();
 
         var update = function() {
+          var total = streams.home.length, current = $body.find('div').length;
+          for (var i = total - 1; i >= current; i--) {
+            composeTweet(i);
+          }
           /*
           var total = streams.home.length;
           var current = $body.find('div').length;
@@ -63,14 +66,10 @@
             //START @ TOTAL number of tweets
               //ITERATE over STREAMS.HOME, and print out each message as matches the current index
             //TERMINATE once you hit the CURRENT length - 1
-          var total = streams.home.length, current = $body.find('div').length;
-          for (var i = total; i > current; i--) {
-            composeTweet
-          }
 
         };
       
-        $('update').on('click', 'button', function() {
+        $('button').on('click', function() {
           update();
         });
 
