@@ -12,41 +12,66 @@
         var $body = $('body');
         $body.html('');
         
-        var $button = $('<button>More tweets</button>');
+        var $button = $('<button class="update">More tweets</button>');
         $body.prepend($button);
 
-        var index = streams.home.length - 1;
+        var composeTweet = function(i) {
+          var tweet = streams.home[i];
+          var twitterTag = tweet.user;
+          var message = tweet.message;
+          
+          var createdAt = String(tweet.created_at);
+          var date = createdAt.slice(4,10);
+          /* Write some code that will display the time in standard 12hr format, with AM/PM marking, and
+          date, when the user hovers over the date of a tweet post.
+          var expandedTime = createdAt
+           */
 
-        var showTweets = function(start) {
-          while(index >= start){
-            var tweet = streams.home[index];
-            var twitterTag = tweet.user;
-            var message = tweet.message;
-            
-            var createdAt = String(tweet.created_at);
-            var date = createdAt.slice(4,10);
-            /* Write some code that will display the time in standard 12hr format, with AM/PM marking, and
-            date, when the user hovers over the date of a tweet post.
-            var expandedTime = createdAt
-             */
+          // var $tweet = $([twitterTag, dot, timeStamp]);
+          var $tweet = $('<div></div>');
+          $tweet.text('@' + tweet.user + ': ' + tweet.message + " " + createdAt);
+          $tweet.prependTo($body);
+        }
 
-            // var $tweet = $([twitterTag, dot, timeStamp]);
-            var $tweet = $('<div></div>');
-            $tweet.text('@' + tweet.user + ': ' + tweet.message + " " + createdAt);
-            $tweet.appendTo($body);
-            index -= 1;
+        var addTweetsToPage = function() {
+          var current = $body.find('div').length;
+          if (current === 0) {
+            for (var i = 0; i < 11; i++) {
+              composeTweet(i);
+            }
+          }
+          else {
+            var total = streams.home.length;
           }
         };
 
-        showTweets(0);
+        addTweetsToPage();
 
-        var showNewTweets = function() {
-          var index = streams.home.length - 1;
-          showTweets(10);
+        var update = function() {
+          /*
+          var total = streams.home.length;
+          var current = $body.find('div').length;
+          var $length = $("<p></p>");
+          $length.text("Current number of tweets: " + current + ". Number of tweets globally from all users you're following: " + total);
+
+          $length.prependTo($body);
+
+
+          */
+
+          //FOR loop
+            //START @ TOTAL number of tweets
+              //ITERATE over STREAMS.HOME, and print out each message as matches the current index
+            //TERMINATE once you hit the CURRENT length - 1
+          var total = streams.home.length, current = $body.find('div').length;
+          for (var i = total; i > current; i--) {
+            composeTweet
+          }
+
         };
-
-        $('button').on('click', function() {
-          showNewTweets();
+      
+        $('update').on('click', 'button', function() {
+          update();
         });
 
       });
