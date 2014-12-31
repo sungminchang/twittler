@@ -15,8 +15,9 @@
         var $button = $('<button>More tweets</button>');
         $body.prepend($button);
 
-        var composeTweet = function(i) {
-          var tweet = streams.home[i];
+        var composeTweet = function(i, user) {
+          var tweet = user ? streams.users[user][i] : streams.home[i];
+          var username = tweet.user;
           console.log(tweet);
 
           var createdAt = String(tweet.created_at);
@@ -28,23 +29,36 @@
 
           // var $tweet = $([twitterTag, dot, timeStamp]);
           var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message + " " + createdAt);
+
+          //Found out how to make jQuery elements using string manipulation, and using this strange notation, from http://stackoverflow.com/questions/4261687/best-way-to-create-a-link-using-jquery
+          var $nameTag = $('<a>', {
+            text: username,
+            href: '#',
+            click: function(){ loadUserPage(username)}
+          }, '</a>');
+          $tweet.text(': ' + tweet.message + " " + createdAt);
+          $nameTag.prependTo($tweet);
           $tweet.prependTo($body);
         };
 
-        var addTweetsToPage = function() {
+        var initialize = function() {
           var current = $body.find('div').length;
-          if (current === 0) {
             for (var i = 0; i < 11; i++) {
               composeTweet(i);
-            }
-          }
-          else {
-            var total = streams.home.length;
-          }
+            }         
         };
 
-        addTweetsToPage();
+        initialize();
+
+        var loadUserPage = function(username) {
+          $('div').hide();
+          
+          var tweets = streams.users[username];
+          tweets.forEach(function(tweet, i, arr) {
+            composeTweet(i, username);
+          });
+
+        };
 
         var update = function() {
           var total = streams.home.length, current = $body.find('div').length;
