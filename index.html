@@ -17,7 +17,7 @@
 
         var composeTweet = function(i, user) {
           var tweet = user ? streams.users[user][i] : streams.home[i];
-          var username = tweet.user;
+          var username = "@" + tweet.user;
           console.log(tweet);
 
           var createdAt = String(tweet.created_at);
@@ -52,11 +52,13 @@
 
         var loadUserPage = function(username) {
           $('div').hide();
-          
+          username = username.slice(1);
+
           var tweets = streams.users[username];
-          tweets.forEach(function(tweet, i, arr) {
+
+          for (var i = 0; i < tweets.length; i++) {
             composeTweet(i, username);
-          });
+          }
 
         };
 
