@@ -6,14 +6,19 @@
     <link rel="stylesheet" href="twittler.css">
   </head>
   <body>
+
     <script>
 
       $(document).ready(function() {
         var $body = $('body');
         $body.html('');
+
+        var $section = $('<section></section>');
+        $section.html('');
+        $section.appendTo($body);
         
         var $button = $('<button>More tweets</button>');
-        $body.prepend($button);
+        $section.prepend($button);
 
         var composeTweet = function(i, user) {
           var tweet = user ? streams.users[user][i] : streams.home[i];
@@ -38,11 +43,11 @@
           }, '</a>');
           $tweet.text(': ' + tweet.message + " " + createdAt);
           $nameTag.prependTo($tweet);
-          $tweet.prependTo($body);
+          $tweet.hide().prependTo($section).fadeIn(640);
         };
 
         var initialize = function() {
-          var current = $body.find('div').length;
+          var current = $section.find('div').length;
             for (var i = 0; i < 11; i++) {
               composeTweet(i);
             }         
@@ -56,9 +61,9 @@
 
           var tweets = streams.users[username];
 
-          for (var i = 0; i < tweets.length; i++) {
+          tweets.forEach(function(tweet, i, arr) {
             composeTweet(i, username);
-          }
+          });
 
         };
 
@@ -88,6 +93,9 @@
         $('button').on('click', function() {
           update();
         });
+
+        $footer = $('<footer></footer>');
+        $footer.appendTo($body);
 
       });
 
